@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "file",
+      "type": "bj.dgi.GSBBackend.entities.FileStorageProperties",
+      "sourceType": "bj.dgi.GSBBackend.entities.FileStorageProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "file.upload-dir",
+      "type": "java.lang.String",
+      "sourceType": "bj.dgi.GSBBackend.entities.FileStorageProperties"
+    },
+    {
+      "name": "file.upload-dir-images",
+      "type": "java.lang.String",
+      "sourceType": "bj.dgi.GSBBackend.properties.FileStorageProperties"
+    }
+  ],
+  "hints": []
+}
