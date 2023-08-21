@@ -23,4 +23,6 @@ public class Compteur {
     private Abonne abonne;
     @ManyToOne
     private Batiment batiment;
+//    @ManyToOne
+//    private Structure structure;
 }

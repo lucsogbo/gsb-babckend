@@ -15,12 +15,13 @@ public class Facture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int numero;
-    private Date debut_periode;
-    private Date fin_priode;
+    private Date date_debut;
+    private Date date_fin;
     private double montant;
     private boolean paye;
     private Date echeance_paiement;
     @ManyToOne
     private Compteur compteur;
+
 
 }

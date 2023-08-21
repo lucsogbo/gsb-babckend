@@ -10,22 +10,19 @@ import java.util.Optional;
 @Service
 public class QuartierService {
     private final QuartierRepository quartierRepository;
-    public QuartierService(QuartierRepository quartierRepository){this.quartierRepository = quartierRepository;}
+    public QuartierService(QuartierRepository quartierRepository){
+        this.quartierRepository = quartierRepository;}
     public Quartier save(Quartier quartier){return quartierRepository.save(quartier);}
-    public Quartier edit(Long id, Quartier quartier){
+    public Quartier edit(Long id,Quartier quartier){
         Quartier entite = quartierRepository.getById(id);
         if(entite!=null){
             entite.setNom(quartier.getNom());
-            entite.setVille(quartier.getVille());
-            entite.setSituation_geographique(quartier.getSituation_geographique());
             return quartierRepository.save(entite);
         }
         return null;
     }
     public boolean delete(Long id){
-        if(quartierRepository.existsById(id)==true){
-            quartierRepository.deleteById(id);
-        }
+        if(quartierRepository.existsById(id)==true) quartierRepository.deleteById(id);
         return !quartierRepository.existsById(id);
     }
     public Optional<Quartier> getById(Long id){

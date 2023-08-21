@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,7 +14,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Batiment extends Site implements Serializable {
+public class Batiment  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +28,10 @@ public class Batiment extends Site implements Serializable {
     private Date reception;
     private Date mise_en_service;
     private String observation;
+    @ManyToOne
+    private Parcelle parcelle;
+    @ManyToOne
+    private Structure structure;
 
 
 }

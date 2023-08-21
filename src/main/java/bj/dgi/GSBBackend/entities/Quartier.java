@@ -1,6 +1,5 @@
 package bj.dgi.GSBBackend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +18,6 @@ public class Quartier {
     private  String nom;
     private String situation_geographique;
     @ManyToOne
-    @JsonIgnoreProperties(value = "departement", allowSetters = true)
-    private Ville ville;
+    @JsonIgnoreProperties(value = "commune", allowSetters = true)
+    private Arrondissement arrondissement;
 }

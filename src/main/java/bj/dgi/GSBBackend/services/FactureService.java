@@ -17,8 +17,8 @@ public class FactureService {
         Facture entite = factureRepository.getById(id);
         if(entite!=null){
             entite.setNumero(facture.getNumero());
-            entite.setDebut_periode(facture.getDebut_periode());
-            entite.setFin_priode(facture.getFin_priode());
+            entite.setDate_debut(facture.getDate_debut());
+            entite.setDate_fin(facture.getDate_fin());
             entite.setEcheance_paiement(facture.getEcheance_paiement());
             entite.setMontant(facture.getMontant());
             entite.setPaye(facture.isPaye());
@@ -34,5 +34,6 @@ public class FactureService {
     public Optional<Facture> getById(Long id){
         return factureRepository.findById(id);
     }
+    public Facture getById_F(Long id){return factureRepository.getById(id);}
     public List<Facture> getAll(){ return factureRepository.findAll(); }
 }

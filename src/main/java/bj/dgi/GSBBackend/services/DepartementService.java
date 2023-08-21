@@ -1,8 +1,12 @@
 package bj.dgi.GSBBackend.services;
 
 import bj.dgi.GSBBackend.entities.Departement;
+import bj.dgi.GSBBackend.entities.Parcelle;
 import bj.dgi.GSBBackend.repositories.DepartementRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,12 +18,12 @@ public class DepartementService {
         this.departementRepository = departementRepository;}
     public Departement save(Departement departement){return departementRepository.save(departement);}
     public Departement edit(Long id,Departement departement){
-       Departement entite = departementRepository.getById(id);
-       if(entite!=null){
-           entite.setNom(departement.getNom());
-           return departementRepository.save(entite);
-       }
-       return null;
+        Departement entite = departementRepository.getById(id);
+        if(entite!=null){
+            entite.setNom(departement.getNom());
+            return departementRepository.save(entite);
+        }
+        return null;
     }
     public boolean delete(Long id){
         if(departementRepository.existsById(id)==true) departementRepository.deleteById(id);
@@ -31,4 +35,9 @@ public class DepartementService {
     public List<Departement> getAll(){
         return departementRepository.findAll();
     }
+    @Transactional(readOnly = true)
+    public Page<Departement> findAllPageable(Pageable pageable){
+        return departementRepository.findAll(pageable);
+    }
 }
+

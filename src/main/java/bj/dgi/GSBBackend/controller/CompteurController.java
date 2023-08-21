@@ -1,9 +1,8 @@
 package bj.dgi.GSBBackend.controller;
 
-import bj.dgi.GSBBackend.entities.Batiment;
 import bj.dgi.GSBBackend.entities.Compteur;
 import bj.dgi.GSBBackend.payload.ApiResponse;
-import bj.dgi.GSBBackend.services.CompteurService;
+import bj.dgi.GSBBackend.repositories.CompteurRepository;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,38 +10,45 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
 @RequestMapping(path = "/api/compteur")
 public class CompteurController {
-    private final CompteurService compteurService;
+    private final CompteurRepository compteurRepository;
 
-    public CompteurController(CompteurService compteurService) {
-        this.compteurService = compteurService;
+    public CompteurController(CompteurRepository compteurRepository) {
+        this.compteurRepository = compteurRepository;
     }
 
     @GetMapping(path = "/liste")
     @ApiOperation(value = "Listes  de tous les Compteur")
     public ResponseEntity<?> getAllBatiment() {
-        return ResponseEntity.ok(compteurService.getAll());
+        return ResponseEntity.ok(compteurRepository.findAll());
+    }
+
+    @GetMapping(path = "/all-compteurs-for-batiemnts/{id_parcelle}")
+    @ApiOperation(value = "Listes de tous les compteurs")
+    public ResponseEntity<?> getAllCompteur(@PathVariable(value = "id_batiment") Long id_batiment) {
+        return ResponseEntity.ok(compteurRepository.findAllByBatiment_Id(id_batiment));
     }
 
     @GetMapping(path = "/One/{id}")
     @ApiOperation(value = "Compteur par id.")
-    public ResponseEntity<?> getOneBatiment(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<?> getOneCompteur(@PathVariable(value = "id") Long id) {
         try {
-            return ResponseEntity.ok(compteurService.getById(id));
+            if (compteurRepository.existsById(id)){
+                return ResponseEntity.ok(compteurRepository.findById(id));
+            }
+            return ResponseEntity.ok("Compteur introuvable");
 
         } catch (Exception e) {
 
             e.printStackTrace() ;
             return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
-
     }
-
     @PostMapping("/create")
     @ApiOperation(value = " ajouter une Compteur .")
 //	@PreAuthorize("hasRole('ROLE_CONSEILLER')")
@@ -50,7 +56,7 @@ public class CompteurController {
 
         try {
 
-            return ResponseEntity.ok(compteurService.save(compteur));
+            return ResponseEntity.ok(compteurRepository.save(compteur));
 
         } catch (ConstraintViolationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -64,11 +70,21 @@ public class CompteurController {
     }
 
 
-    @PutMapping(path = "/edit/{id}")
+    @PutMapping(path = "/update")
     @ApiOperation(value = " Modifier  un Compteur .")
-    public ResponseEntity<?> updateCompteur(@PathVariable(name = "id") Long id, @RequestBody Compteur compteur) {
+    public ResponseEntity<?> updateCompteur( @RequestBody Compteur compteur) {
         try {
-            return ResponseEntity.ok(compteurService.edit(id, compteur));
+            Optional<Compteur> compteurOp = compteurRepository.findById(compteur.getId());
+            if (compteurOp.isPresent()){
+                compteurOp.get().setAbonne(compteur.getAbonne());
+                compteurOp.get().setNumero_compteur(compteur.getNumero_compteur());
+                compteurOp.get().setDate_attribution(compteur.getDate_attribution());
+                compteurOp.get().setImpaye(compteur.isImpaye());
+                compteurOp.get().setObservation(compteur.getObservation());
+                compteurOp.get().setNumero_police(compteur.getNumero_police());
+                return ResponseEntity.ok(compteurRepository.save(compteurOp.get()));
+            }
+            return ResponseEntity.ok("Compteur introuvable");
         }catch (ConstraintViolationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -79,11 +95,14 @@ public class CompteurController {
         }
 
     }
-
     @DeleteMapping(path = "/delete/{id}")
-    @ApiOperation(value = " Supprimer Compteurt par id")
-    public Boolean deletecCompteur(@PathVariable(name = "id") Long id) {
-
-        return compteurService.delete(id);
+    @ApiOperation(value = " Supprimer Compteur par id")
+    public ResponseEntity<?>  deleteCompteur(@RequestBody Compteur compteur) {
+        if (compteurRepository.existsById(compteur.getId())){
+            compteurRepository.delete(compteur);
+            return ResponseEntity.ok("Compteur supprimé avec succè");
+        }
+        return ResponseEntity.ok("Compteur introubvable");
     }
+
 }

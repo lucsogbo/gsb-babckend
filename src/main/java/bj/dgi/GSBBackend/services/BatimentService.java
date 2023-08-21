@@ -15,19 +15,6 @@ public class BatimentService {
     public Batiment edit(Long id,Batiment batiment){
         Batiment entite = batimentRepository.getById(id);
         if(entite!=null){
-
-            entite.setFichier(batiment.getFichier());
-            entite.setLevee_topographique(batiment.isLevee_topographique());
-            entite.setNom(batiment.getNom());
-            entite.setNumero(batiment.getNumero());
-            entite.setNumero_convention_vente(batiment.getNumero_convention_vente());
-            entite.setNumero_titre_foncier(batiment.getNumero_titre_foncier());
-            entite.setQuartier(batiment.getQuartier());
-            entite.setSuperficie(batiment.getSuperficie());
-            entite.setNumero_titre_foncier(batiment.getNumero_titre_foncier());
-            entite.setType_site(batiment.getType_site());
-            entite.setTitre_foncier(batiment.isTitre_foncier());
-
             entite.setType_batiment(batiment.getType_batiment());
             entite.setLoyer(batiment.getLoyer());
             entite.setSituation_juridique(batiment.getSituation_juridique());

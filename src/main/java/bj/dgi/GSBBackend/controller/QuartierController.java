@@ -1,7 +1,6 @@
 package bj.dgi.GSBBackend.controller;
 
 import bj.dgi.GSBBackend.entities.Quartier;
-import bj.dgi.GSBBackend.entities.Ville;
 import bj.dgi.GSBBackend.payload.ApiResponse;
 import bj.dgi.GSBBackend.services.QuartierService;
 import io.swagger.annotations.ApiOperation;
